@@ -4,9 +4,10 @@
 import Image from 'next/image'
 import daisyImg from "../../public/assets/daisy-flowers-blue-3840x2160-12883.jpeg"
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 const Register = () => {
     const router = useRouter()
@@ -18,6 +19,7 @@ const Register = () => {
         confirmPassword: '',
         profileImage: null,
     })
+    const [matchPassword, setMatchPassword] = useState(true)
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const { name, value, files } = e.target;
@@ -27,6 +29,10 @@ const Register = () => {
             [name]: name === 'profileImage' ? (files && files[0]) : value
         }));
     };
+    useEffect(() => {
+        setMatchPassword(formData.password === formData.confirmPassword)
+    }, [formData.password, formData.confirmPassword])
+
     const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         try {
@@ -44,7 +50,8 @@ const Register = () => {
             console.log(error)
         }
     }
-    console.log(formData)
+
+    const loginWithGoogle = () => { signIn('google', { callbackUrl: '/' }) }
 
     return (
         <div className="hero min-h-screen bg-base-200" style={{ backgroundImage: 'url(https://i.pinimg.com/originals/d2/e4/ed/d2e4ed3306b60642a22aceb4f49c6e9d.jpg)' }}>
@@ -84,11 +91,14 @@ const Register = () => {
                             </label>
                             <input name='confirmPassword' value={formData.confirmPassword} type="password" placeholder="Type here" onChange={handleChange} className="input input-bordered" required />
                         </div>
-                        <div className='form-control'>
+                        <div className='form-control items-center'>
                             <label className="label">
                                 <span className="label-text">Upload your profile's image</span>
                             </label>
                             <input type="file" name='profileImage' className="file-input file-input-ghost w-full max-w-xs" accept='image/*' onChange={handleChange} />
+                            {
+                                formData.profileImage && <Image src={URL.createObjectURL(formData.profileImage)} alt='profile image' width={50} height={50} />
+                            }
                         </div>
                         <div className='form-control'>
                             <label className="label">
@@ -98,10 +108,10 @@ const Register = () => {
                             </label>
                         </div>
                         <div className="form-control">
-                            <button type='submit' className="btn btn-primary">Register</button>
+                            <button type='submit' className="btn btn-primary" disabled={!matchPassword} >Register</button>
                         </div>
                         <div className="form-control mt-2">
-                            <button className="btn">
+                            <button className="btn" onClick={loginWithGoogle}>
                                 Login with Google
                                 <FcGoogle className='ml-2' />
                             </button>

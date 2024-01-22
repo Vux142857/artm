@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
         const email = data.get('email') as string
         const password = data.get('password') as string
         const file = data.get('profileImage') as File
-
+        
         if (!file) {
             return NextResponse.json({ message: 'Please upload a profile picture' }, { status: 400 })
         }
