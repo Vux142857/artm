@@ -2,7 +2,8 @@
 import Image from 'next/image'
 import daisyImg from "../../public/assets/daisy-flowers-blue-3840x2160-12883.jpeg"
 import TypingEffect from "../../components/TypingEffect"
-const page = () => {
+import Link from 'next/link'
+const Login = () => {
     return (
         <div className="hero min-h-screen bg-base-200" style={{ backgroundImage: 'url(https://i.pinimg.com/originals/d2/e4/ed/d2e4ed3306b60642a22aceb4f49c6e9d.jpg)' }}>
             <div className="hero-content flex-col lg:flex-row-reverse">
@@ -23,13 +24,20 @@ const page = () => {
                         <div className="form-control mt-6">
                             <button className="btn btn-primary">Login</button>
                         </div>
+                        <div className='form-control'>
+                            <label className="label">
+                                <span className="label-text">Do not have account?
+                                    <Link href='/register' > Sign up here</Link>
+                                </span>
+                            </label>
+                        </div>
                     </form>
                 </div>
                 <div className="text-center lg:text-left static">
                     <div className="card bg-base-content shadow-xl image-full">
                         <figure><Image src={daisyImg} alt='Daisy flower' ></Image></figure>
                         <div className="card-body">
-                            <TypingEffect text='WELCOME BACK' />
+                            <TypingEffect text='WELCOME BACK HAVE A GOOD DAY <3' />
                         </div>
                     </div>
                 </div>
@@ -38,4 +46,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Login

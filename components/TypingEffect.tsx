@@ -8,16 +8,16 @@ interface TypingEffectProps {
 const TypingEffect: React.FC<TypingEffectProps> = (typingProps: TypingEffectProps) => {
   const textToType = typingProps.text
   const [displayedText, setDisplayedText] = useState(textToType[0]);
-  let index = 1;
+  let index = 0;
 
   useEffect(() => {
     const typingInterval = setInterval(() => {
-      setDisplayedText((prevText) => prevText + textToType[index]);
       index++;
-      if (index === textToType.length - 1) {
+      setDisplayedText((displayedText) => displayedText + textToType[index]);
+      if (index == textToType.length - 1) {
         clearInterval(typingInterval);
       }
-    }, 500); // Thời gian delay giữa mỗi ký tự, có thể điều chỉnh
+    }, 150); // Thời gian delay giữa mỗi ký tự, có thể điều chỉnh
 
     return () => {
       clearInterval(typingInterval);
