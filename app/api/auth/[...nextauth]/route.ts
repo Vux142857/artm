@@ -1,9 +1,11 @@
-// @ts-nocheck
+//@ts-nocheck
 import NextAuth from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import 'dotenv/config'
 import { connectToDB } from "@/mongodb/database";
 import User from "@/models/User.model";
+import bcrypt from "bcrypt";
 
 const handler = NextAuth({
     providers: [
@@ -18,11 +20,29 @@ const handler = NextAuth({
                 }
             }
         }),
+        CredentialsProvider({
+            name: 'Credentials',
+            async authorize(credentials: any, req: any) {
+                await connectToDB()
+                const { email, password } = credentials
+                const existUser = await User.findOne({ email })
+                if (!existUser) {
+                    throw new Error('Invalid email or password')
+                }
+                const matchPassword = await bcrypt.compare(password, existUser.password)
+                if (!matchPassword) {
+                    throw new Error('Invalid email or password')
+                }
+                return existUser
+            }
+        })
     ],
     callbacks: {
         async session({ session }) {
-            const sessionUser = await User.findOne({ email: (session.user && session.user.email) })
+            console.log(123)
+            const sessionUser = await User.findOne({ email: (session.user.email) })
             session.user.id = sessionUser._id.toString()
+            session.user = sessionUser
             return session
         },
         async signIn({ account, profile }: any) {
@@ -47,8 +67,10 @@ const handler = NextAuth({
                     console.log(error.message)
                 }
             }
+            return true
         },
-    }
+    },
+    secret: process.env.NEXTAUTH_SECRET as string
 })
 
 export { handler as GET, handler as POST }

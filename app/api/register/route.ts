@@ -24,8 +24,9 @@ export const POST = async (req: Request) => {
         const bytes = await file.arrayBuffer()
         const buffer = Buffer.from(bytes)
         initFolder(path.resolve('public/temp'))
-        const profileImageURL = path.resolve('public/temp', file.name)
-        writeFileSync(profileImageURL, buffer)
+        const profileImagePath = path.resolve('public/temp', file.name)
+        writeFileSync(profileImagePath, buffer)
+        const profileImageURL = `/temp/${file.name}`
         const existingUser = await User.findOne({ email })
 
         if (existingUser) {

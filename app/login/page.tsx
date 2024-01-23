@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 'use client'
 import Image from 'next/image'
 import daisyImg from "../../public/assets/daisy-flowers-blue-3840x2160-12883.jpeg"
@@ -10,31 +10,21 @@ import { useRouter } from 'next/navigation'
 import { FcGoogle } from 'react-icons/fc'
 
 const Login = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
     const router = useRouter()
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    })
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const { name, value } = e.target;
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
     const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         try {
-            const loginForm = new FormData();
-            Object.keys(formData).forEach(key => loginForm.append(key, formData[key]))
-
-            const response = await fetch('api/login', {
-                method: 'POST',
-                body: loginForm
+            const res = await signIn('credentials', {
+                redirect: false,
+                email,
+                password,
             })
-            if (response.ok) {
+            if (res?.error) {
+                setError(res.error)
+            } else {
                 router.push('/')
             }
         } catch (error) {
@@ -52,14 +42,18 @@ const Login = () => {
                             <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
-                            <input name='email' type="email" onChange={handleChange} placeholder="email" className="input input-bordered" required />
+                            <input name='email' type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="email" className="input input-bordered" value={email} required />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input name='password' type="password" onChange={handleChange} placeholder="password" className="input input-bordered" required />
+                            <input name='password' type="password" onChange={(e) => { setPassword(e.target.value) }} placeholder="password" className="input input-bordered" value={password} required />
                         </div>
+                        {error && (<div role="alert" className="alert alert-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>{error}</span>
+                        </div>)}
                         <div className="form-control mt-6">
                             <button className="btn btn-primary" type='submit'>Login</button>
                         </div>
@@ -72,7 +66,7 @@ const Login = () => {
                         <div className='form-control'>
                             <label className="label">
                                 <span className="label-text">Do not have account?
-                                    <Link href='/register' > Sign up here</Link>
+                                    <Link href='/register' > Register here</Link>
                                 </span>
                             </label>
                         </div>

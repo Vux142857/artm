@@ -8,12 +8,12 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      'serif':'Dancing Script',
+      'serif': 'Dancing Script',
     }
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["cupcake"],
+    themes: ["cupcake", "retro"],
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes

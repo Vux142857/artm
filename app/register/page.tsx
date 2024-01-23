@@ -44,7 +44,7 @@ const Register = () => {
                 body: registerForm
             })
             if (response.ok) {
-                router.push('/')
+                router.push('/login')
             }
         } catch (error) {
             console.log(error)
@@ -103,7 +103,7 @@ const Register = () => {
                         <div className='form-control'>
                             <label className="label">
                                 <span className="label-text">Already have an account?
-                                    <Link href='/login' > Sign in here</Link>
+                                    <Link href='/login' > Login here</Link>
                                 </span>
                             </label>
                         </div>
