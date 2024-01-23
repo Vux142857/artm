@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { Schema, model, models } from "mongoose";
 
 export interface WorkReqBody {
@@ -29,7 +28,7 @@ const WorkSchema = new Schema({
         default: []
     },
     description: {
-        type: Text,
+        type: String,
     },
     price: {
         type: Number,

@@ -27,6 +27,7 @@ const Form: React.FC<FormProps> = ({ type, work, setWork, handleSubmit }) => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const { name, value } = e.target;
     setWork((prevWork: any) => ({
       ...prevWork,
@@ -55,24 +56,27 @@ const Form: React.FC<FormProps> = ({ type, work, setWork, handleSubmit }) => {
           )}
         </div>
         <div className="card w-full shadow-2xl bg-base-100 ">
-          <form className="card-body" onSubmit={handleSubmit}>
+          <form className="card-body" onSubmit={() => { handleSubmit(FormData) }}>
             {/* PICK CATEGORY */}
             <div className="form-control w-full max-w-xs">
               <div className="label">
                 <h3 className="">Pick category of your work:</h3>
               </div>
-              <select className="select select-bordered" value={work.category} onChange={() => {
-                setWork((prevWork: any) => ({
-                  ...prevWork,
-                  category: (document.querySelector('.select') as HTMLOptionElement).value
-                }))
-                console.log((document.querySelector('.select') as HTMLOptionElement).value)
-              }} required>
-                <option disabled selected>Pick one</option>
-                {categories.map((category, index) => (
-                  <option key={index}>{category}</option>
+              <div className="flex flex-wrap gap-2 px-5 ">
+                {categories?.map((item, index) => (
+                  <p
+                    key={index}
+                    className={`${work.category == item ? "text-secondary-content cursor-pointer btn btn-outline bg-lime-300" : "text-primary-content cursor-pointer btn btn-outline"}`}
+                    onClick={() => {
+                      console.log(item)
+                      setWork({ ...work, category: item });
+                      console.log()
+                    }}
+                  >
+                    {item}
+                  </p>
                 ))}
-              </select>
+              </div>
             </div>
             {/* UPLOAD IMAGE */}
             <div className="form-control w-full max-w-xs">
@@ -110,7 +114,13 @@ const Form: React.FC<FormProps> = ({ type, work, setWork, handleSubmit }) => {
               <div className="label">
                 <h3 className="">Description:</h3>
               </div>
-              <textarea name="description" className="textarea textarea-secondary" onChange={(e) => handleChange} value={work.description} placeholder="Write something about your work"></textarea>
+              <textarea
+                name="description"
+                className="textarea textarea-secondary"
+                onChange={(e: any) => handleChange(e)} // Add parentheses to call the handleChange function
+                value={work.description}
+                placeholder="Write something about your work"
+              ></textarea>
             </div>
             {/* Price */}
             <div className="form-control w-full max-w-xs">
@@ -118,6 +128,9 @@ const Form: React.FC<FormProps> = ({ type, work, setWork, handleSubmit }) => {
                 <h3 className="">Price:</h3>
               </div>
               <input name="price" type="number" onChange={handleChange} value={work.price} placeholder="Type here" className="input input-bordered input-secondary w-full max-w-xs" required />
+            </div>
+            <div className="form-control w-full max-w-xs">
+              <button type="submit" className="btn btn-primary w-full max-w-xs">{type}</button>
             </div>
           </form>
         </div>

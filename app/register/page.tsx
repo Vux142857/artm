@@ -39,7 +39,7 @@ const Register = () => {
             const registerForm = new FormData();
             Object.keys(formData).forEach(key => registerForm.append(key, formData[key]))
 
-            const response = await fetch('api/register', {
+            const response = await fetch('/api/register', {
                 method: 'POST',
                 body: registerForm
             })

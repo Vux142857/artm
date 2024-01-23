@@ -1,24 +1,44 @@
+import Work from "@/models/Work.model";
 import { connectToDB } from "@/mongodb/database";
+import { writeFileSync } from "fs";
+import { ObjectId } from "mongodb";
+import { NextResponse } from "next/server";
+import path from "path";
 
 export async function POST(req: Request) {
     try {
         await connectToDB()
         const data = await req.formData()
-        const creator = data.get('creator')
-        const category = data.get('category')
-        const title = data.get('title')
-        const description = data.get('description')
+        console.log(data)
+        const creator = data.get('creator') as string
+        const category = data.get('category') as string
+        const title = data.get('title') as string
+        const description = data.get('description') as string
         const price = data.get('price')
-
-        const photos = data.getAll('workPhotoURLs') as File[]
-
+        console.log(data)
+        const photos = data.getAll('photos') as File[]
         const workPhotoURLs = []
 
         for (const photo of photos) {
-            const bytes = await photo.arrayBuffer() 
-            workPhotoURLs.push(photo)
+            const bytes = await photo.arrayBuffer()
+            const buffer = Buffer.from(bytes)
+            const workPhotoPath = path.resolve('public/temp', photo.name)
+            writeFileSync(workPhotoPath, buffer)
+            const workPhotoURL = `/temp/${photo.name}`
+            workPhotoURLs.push(workPhotoURL)
         }
-    } catch (error) {
-        
+        console.log(workPhotoURLs)
+        const newWork = await Work.create({
+            creator: new ObjectId(creator),
+            category,
+            title,
+            description,
+            price,
+            workPhotoURLs
+        })
+        return NextResponse.json({ message: 'Work created successfully', work: newWork }, { status: 200 })
+    } catch (error: any) {
+        console.log(error.message)
+        return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
     }
 }
