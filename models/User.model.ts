@@ -1,5 +1,17 @@
 import { Schema, model, models } from "mongoose";
 
+export interface UserReqBody {
+    username: string;
+    name: string;
+    email: string;
+    profileImageURL: string;
+    password: string;
+    wishlist: string[];
+    cart: string[];
+    order: string[];
+    work: string[];
+}
+
 const UserSchema = new Schema({
     username: {
         type: String,
