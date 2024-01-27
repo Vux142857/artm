@@ -22,8 +22,13 @@ const CreateWork = () => {
         e.preventDefault();
         try {
             const workForm = new FormData();
-            Object.keys(work).forEach(key => workForm.append(key, work[key]))
-            console.log(workForm)
+            for (var key in work) {
+                workForm.append(key, work[key])
+            }
+            console.log(work.photos)
+            work.photos.forEach((photo) => {
+                workForm.append("workPhotoPaths", photo)
+            })
             const response = await fetch('/api/work/new', {
                 method: 'POST',
                 body: workForm

@@ -56,7 +56,7 @@ const Form: React.FC<FormProps> = ({ type, work, setWork, handleSubmit }) => {
           )}
         </div>
         <div className="card w-full shadow-2xl bg-base-100 ">
-          <form className="card-body" onSubmit={() => { handleSubmit(FormData) }}>
+          <form className="card-body" onSubmit={handleSubmit}>
             {/* PICK CATEGORY */}
             <div className="form-control w-full max-w-xs">
               <div className="label">
@@ -93,7 +93,7 @@ const Form: React.FC<FormProps> = ({ type, work, setWork, handleSubmit }) => {
                           type="file"
                           name='photos'
                           style={{ display: 'none' }}
-                          accept="image/*" onChange={handleUploadPhotos} multiple
+                          accept='image/*' onChange={handleUploadPhotos} multiple
                         />
                         <IoIosImages size={50} />
                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span></p>

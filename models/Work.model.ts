@@ -36,6 +36,6 @@ const WorkSchema = new Schema({
     }
 })
 
-const Work = models.work || model('Work', WorkSchema)
+const Work = models.Work || model('Work', WorkSchema)
 
 export default Work
