@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { categories } from "@/app/constants/category.constants";
+import { categories } from "@/constants/category.constants";
 import { IoIosImages } from 'react-icons/io';
 import { BiTrash } from "react-icons/bi";
 import { WorkReqBody } from "@/models/Work.model";
