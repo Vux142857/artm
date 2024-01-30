@@ -8,6 +8,7 @@ export const GET = async (req: Request, { params }: { params: { category: string
         let workList
         if (category == "all") {
             workList = await Work.find().populate("creator")
+            console.log(workList)
         } else {
             workList = await Work.find({ category }).populate("creator")
         }

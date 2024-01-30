@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 const FilterCategory = ({ params }: { params: { category: string } }) => {
   const [currentCategory, setCurrentCategory] = useState(params.category)
   const [works, setWorks] = useState([])
-  console.log(currentCategory)
   const getWorks = async () => {
     const response = await fetch(
       `/api/work/list/${currentCategory}`,

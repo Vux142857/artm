@@ -52,7 +52,7 @@ const UserSchema = new Schema({
         type: Array,
         default: []
     }
-})
+}, { timestamps: true })
 
 const User = models.User || model('User', UserSchema)
 

@@ -33,8 +33,8 @@ const WorkSchema = new Schema({
     price: {
         type: Number,
         require: [true, 'Price is required']
-    }
-})
+    },
+}, { timestamps: true })
 
 const Work = models.Work || model('Work', WorkSchema)
 

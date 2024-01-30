@@ -1,16 +1,28 @@
+'use client'
 import ProductLayout from "@/components/ProductLayout";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const response = await fetch(
-    'http://localhost:3000/api/work/list/all',
-    {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    })
-  const data = await response.json()
+const Home = () => {
+  const [works, setWorks] = useState([])
+  const getWorks = async () => {
+    const response = await fetch(
+      '/api/work/list/feed',
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      })
+    const data = await response.json()
+    setWorks(data)
+  }
+
+  useEffect(() => {
+    getWorks()
+  }, [])
   return (
     <>
-      <section><ProductLayout data={data} /></section>
+      <section><ProductLayout data={works} /></section>
     </>
   );
 }
+
+export default Home;
