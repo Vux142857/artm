@@ -1,5 +1,4 @@
 export const categories = [
-    "All",
     "Graphics",
     "Fonts",
     "Illustrations",
